@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public InventoryManager inventoryManager;
     public UIManager uiManager;
     public PlayerController playerController;
+    public AudioManager audioManager;
 
     [Header("---- Camera ----")] 
     public Camera mainCamera;
@@ -99,8 +100,11 @@ public class GameManager : MonoBehaviour
         uiManager.blackScreen.DOFade(1,2);
         yield return new WaitForSeconds(2);
         uiManager.winScreen.SetActive(true);
-        Time.timeScale = 0;
+        audioManager.PlaySFX(audioManager.win);
+        audioManager.BattleMusic(false);
         uiManager.blackScreen.DOFade(0,2);
+        yield return new WaitForSeconds(2);
+        Time.timeScale = 0;
     }
 
     private void FixedUpdate()
@@ -122,7 +126,9 @@ public class GameManager : MonoBehaviour
         inCombat = false;
         uiManager.feedback.GetComponentInChildren<TextMeshProUGUI>().text = "Fim de Combate!";
         yield return new WaitForSeconds(2f);
+        audioManager.BattleMusic(false);
         CameraController(false);
+        uiManager.feedback.GetComponentInChildren<TextMeshProUGUI>().text = "";
         uiManager.inventoryUI.SetActive(false);
         uiManager.healthBarUI.SetActive(false);
         uiManager.feedback.SetActive(false);
@@ -143,19 +149,27 @@ public class GameManager : MonoBehaviour
         
         //ATAQUE PLAYER
         playerController.animator.SetTrigger("punch");
+        yield return new WaitForSeconds(.9f);
+        audioManager.ChooseRandomPunchSFX();
         combatManager.ApplyDamageToEnemy(inventoryManager.playerSelectedEquipment, enemyEquipment);
         uiManager.UpdateEnemyUI(combatManager.enemyHealth);
+        if (combatManager.enemyHealth <= 0) combatManager.enemyHealth = 0;
         uiManager.feedback.GetComponentInChildren<TextMeshProUGUI>().text = $"O INIMIGO está com {combatManager.enemyHealth} de vida!";
         yield return new WaitForSeconds(2f);
         
         //ATAQUE INIMIGO
         enemyAnimator.SetTrigger("punch");
+        yield return new WaitForSeconds(.9f);
+        audioManager.ChooseRandomPunchSFX();
         combatManager.ApplyDamageToPlayer(inventoryManager.playerSelectedEquipment, enemyEquipment);
         uiManager.UpdatePlayerUI(combatManager.playerHealth);
+        if (combatManager.playerHealth <= 0) combatManager.playerHealth = 0;
         uiManager.feedback.GetComponentInChildren<TextMeshProUGUI>().text = $"O JOGADOR está com {combatManager.playerHealth} de vida!";
         yield return new WaitForSeconds(2f);
         
-        //REINICIAR TURNO
+        //CHECAR VIDA E REINICIAR TURNO
+        combatManager.CheckHealth(combatManager.playerHealth, true);
+        combatManager.CheckHealth(combatManager.enemyHealth, false);
         uiManager.feedback.GetComponentInChildren<TextMeshProUGUI>().text = "Escolha um equipamento.";
         uiManager.inventoryUI.SetActive(true);
         isEquipmentSelected = false;

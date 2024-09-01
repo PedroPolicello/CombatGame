@@ -29,6 +29,7 @@ public class InventoryManager : MonoBehaviour
 
     void PlayerSelectedEquipment(EquipmentDisplay selectedDisplay)
     {
+        GameManager.Instance.audioManager.PlaySFX(GameManager.Instance.audioManager.click); //Ajuste
         playerSelectedEquipment = selectedDisplay.GetEquipment();
         GameManager.Instance.isEquipmentSelected = true;
     }

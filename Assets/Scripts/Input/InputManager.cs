@@ -16,12 +16,12 @@ public class InputManager
         inputControls.Enable();
 
         inputControls.Player.Interact.performed += OnInteractPerformed;
-        inputControls.Player.FleeBattle.performed += OnFleeBattlePerformed;
+        inputControls.Player.Pause.performed += OnPauseGamePerformed;
     }
 
-    private void OnFleeBattlePerformed(InputAction.CallbackContext obj)
+    private void OnPauseGamePerformed(InputAction.CallbackContext obj)
     {
-        if(GameManager.Instance.canFlee && GameManager.Instance.inCombat) GameManager.Instance.endCombat = true;
+        GameManager.Instance.uiManager.Pause();
     }
 
     private void OnInteractPerformed(InputAction.CallbackContext obj)
@@ -31,6 +31,7 @@ public class InputManager
             GameManager.Instance.inCombat = true;
             GameManager.Instance.SetEnemyVariables();
             GameManager.Instance.CameraController(true);
+            GameManager.Instance.audioManager.BattleMusic(true);
         }
     }
 

@@ -4,6 +4,6 @@ using UnityEngine;
 public class Enemy : ScriptableObject
 {
     public int enemyHealth;
-    public bool inRange;
-    public bool hasBeenDefeated;
+    [HideInInspector] public bool inRange;
+    [HideInInspector] public bool hasBeenDefeated;
 }

@@ -30,7 +30,6 @@ public class CombatManager : MonoBehaviour
         if (damage > 0)
         {
             playerHealth -= damage;
-            CheckHealth(playerHealth, true);
         }
     }
 
@@ -40,11 +39,10 @@ public class CombatManager : MonoBehaviour
         if (damage > 0)
         {
             enemyHealth -= damage;
-            CheckHealth(enemyHealth, false);
         }
     }
 
-    void CheckHealth(int health, bool isPlayer)
+    public void CheckHealth(int health, bool isPlayer)
     {
         if (health <= 0)
         {
@@ -68,8 +66,11 @@ public class CombatManager : MonoBehaviour
         GameManager.Instance.uiManager.blackScreen.DOFade(1,2);
         yield return new WaitForSeconds(2f);
         GameManager.Instance.uiManager.loseScreen.SetActive(true);
-        Time.timeScale = 0;
+        GameManager.Instance.audioManager.PlaySFX(GameManager.Instance.audioManager.lose);
+        GameManager.Instance.audioManager.BattleMusic(false);
         GameManager.Instance.uiManager.blackScreen.DOFade(0,2);
+        yield return new WaitForSeconds(2f);
+        Time.timeScale = 0;
     }
     
 }
