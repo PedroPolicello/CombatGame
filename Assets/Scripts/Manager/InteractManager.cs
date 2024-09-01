@@ -21,11 +21,14 @@ public class InteractManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !GameManager.Instance.selectedEnemy.hasBeenDefeated)
+        if (other.CompareTag("Player"))
         {
             GameManager.Instance.SetEnemyInfo(enemySelected, camera, animator, textGameObj);
-            textGameObj.SetActive(true);
-            enemySelected.inRange = true;
+            if (!GameManager.Instance.selectedEnemy.hasBeenDefeated)
+            {
+                textGameObj.SetActive(true);
+                enemySelected.inRange = true;
+            }
         }
     }
 

@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -6,6 +7,17 @@ public class CombatManager : MonoBehaviour
     [Header("---- Health Info ----")]
     public int playerHealth;
     public int enemyHealth;
+    private int playerMaxHealth;
+
+    private void Awake()
+    {
+        playerMaxHealth = playerHealth;
+    }
+
+    public void RecoverPlayerHealth()
+    {
+        playerHealth = playerMaxHealth;
+    }
 
     public void SetEnemyHealth(Enemy enemy)
     {

@@ -21,13 +21,14 @@ public class InputManager
 
     private void OnFleeBattlePerformed(InputAction.CallbackContext obj)
     {
-        GameManager.Instance.endCombat = true;
+        if(GameManager.Instance.canFlee && GameManager.Instance.inCombat) GameManager.Instance.endCombat = true;
     }
 
     private void OnInteractPerformed(InputAction.CallbackContext obj)
     { 
-        if (GameManager.Instance.selectedEnemy.inRange && !GameManager.Instance.selectedEnemy.hasBeenDefeated)
+        if (GameManager.Instance.selectedEnemy.inRange)
         {
+            GameManager.Instance.inCombat = true;
             GameManager.Instance.SetEnemyVariables();
             GameManager.Instance.CameraController(true);
         }

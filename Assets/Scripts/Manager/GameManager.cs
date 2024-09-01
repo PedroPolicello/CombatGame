@@ -29,19 +29,22 @@ public class GameManager : MonoBehaviour
     public Enemy selectedEnemy;
     public Camera enemyCamera;
     public GameObject enemyCanvasObj;
-    public int enemiesInGame;
+    public GameObject[] enemiesInGame;
     
     private Animator enemyAnimator;
     private bool startTurn = true;
     [HideInInspector] public int enemiesDefeated;
+    [HideInInspector] public bool inCombat;
     [HideInInspector] public bool isEquipmentSelected;
     [HideInInspector] public bool endCombat;
+    [HideInInspector] public bool canFlee = true;
     
     private void Awake()
     {
         Instance = this;
         InputManager = new InputManager();
         SetupGame();
+        canFlee = true;
     }
 
     void SetupGame()
@@ -86,7 +89,7 @@ public class GameManager : MonoBehaviour
 
     public void CheckEndGame()
     {
-        if (enemiesDefeated >= enemiesInGame)
+        if (enemiesDefeated >= enemiesInGame.Length)
         {
             winScreen.SetActive(true);
             Time.timeScale = 0;
@@ -97,7 +100,7 @@ public class GameManager : MonoBehaviour
     {
         if (isEquipmentSelected && startTurn && !endCombat)
         {
-            feedback.GetComponentInChildren<TextMeshProUGUI>().text = "Escolha um equipamento.";
+            canFlee = false;
             startTurn = false;
             StartCoroutine(TurnController());
         }
@@ -109,12 +112,14 @@ public class GameManager : MonoBehaviour
 
     IEnumerator EndCombat()
     {
+        inCombat = false;
         feedback.GetComponentInChildren<TextMeshProUGUI>().text = "Fim de Combate!";
         yield return new WaitForSeconds(2f);
         CameraController(false);
         inventoryUI.SetActive(false);
         healthBarUI.SetActive(false);
         feedback.SetActive(false);
+        combatManager.RecoverPlayerHealth();
         InputManager.EnableMovement();
         endCombat = false;
     }
@@ -144,14 +149,25 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         
         //REINICIAR TURNO
+        feedback.GetComponentInChildren<TextMeshProUGUI>().text = "Escolha um equipamento.";
         inventoryUI.SetActive(true);
         isEquipmentSelected = false;
+        canFlee = true;
         yield return new WaitForSeconds(1f);
         startTurn = true;
     }
 
+    public void HasBeenDefeatedToFalse()
+    {
+        foreach (GameObject enemy in enemiesInGame)
+        {
+            if(enemy == null) return;
+            enemy.GetComponent<InteractManager>().enemySelected.hasBeenDefeated = false;
+        }
+    }
+
     private void OnDisable()
     {
-        selectedEnemy.hasBeenDefeated = false;
+        HasBeenDefeatedToFalse();
     }
 }
