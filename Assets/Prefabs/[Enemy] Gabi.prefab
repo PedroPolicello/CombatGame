@@ -702,6 +702,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12766db2fe07e424393642cb4ac784a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  duration: 15
+  endValue: {x: 0, y: 360, z: 0}
 --- !u!1 &1792629336362203862
 GameObject:
   m_ObjectHideFlags: 0
@@ -961,7 +963,7 @@ GameObject:
   - component: {fileID: 7761489102338311371}
   m_Layer: 0
   m_Name: '[Enemy] Gabi'
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

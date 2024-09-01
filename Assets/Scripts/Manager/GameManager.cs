@@ -43,12 +43,14 @@ public class GameManager : MonoBehaviour
     void SetupGame()
     {
         InputManager.DisableMovement();
+        menuCamera.gameObject.SetActive(true);
+        mainCamera.gameObject.SetActive(false);
+        uiManager.mainMenu.SetActive(true);
         uiManager.inventoryUI.SetActive(false);
         uiManager.healthBarUI.SetActive(false);
         uiManager.feedback.SetActive(false);
         uiManager.blackScreen.alpha = 0;
-        menuCamera.gameObject.SetActive(true);
-        mainCamera.gameObject.SetActive(false);
+        enemiesInGame = GameObject.FindGameObjectsWithTag("Enemy");
     }
 
     public void SetEnemyInfo(Enemy enemy, Camera camera, Animator animator, GameObject canvasObj)
