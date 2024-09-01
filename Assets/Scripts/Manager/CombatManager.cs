@@ -1,6 +1,6 @@
-using System;
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 public class CombatManager : MonoBehaviour
 {
@@ -51,8 +51,7 @@ public class CombatManager : MonoBehaviour
             if (isPlayer)
             {
                 GameManager.Instance.endCombat = true;
-                GameManager.Instance.loseScreen.SetActive(true);
-                Time.timeScale = 0;
+                StartCoroutine(LoseScreen());
             }
             else
             {
@@ -62,6 +61,15 @@ public class CombatManager : MonoBehaviour
                 GameManager.Instance.CheckEndGame();
             }
         }
+    }
+
+    IEnumerator LoseScreen()
+    {
+        GameManager.Instance.uiManager.blackScreen.DOFade(1,2);
+        yield return new WaitForSeconds(2f);
+        GameManager.Instance.uiManager.loseScreen.SetActive(true);
+        Time.timeScale = 0;
+        GameManager.Instance.uiManager.blackScreen.DOFade(0,2);
     }
     
 }

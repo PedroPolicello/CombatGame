@@ -3,6 +3,15 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("---- UI ----")]
+    public GameObject inventoryUI;
+    public GameObject healthBarUI;
+    public GameObject feedback;
+    public GameObject mainMenu;
+    public GameObject winScreen;
+    public GameObject loseScreen;
+    public CanvasGroup blackScreen;
+    
     [Header("---- Health Bars Info ----")]
     [SerializeField] private Slider playerHealth;
     [SerializeField] private Slider enemyHealth;
