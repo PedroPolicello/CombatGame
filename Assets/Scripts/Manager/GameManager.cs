@@ -46,11 +46,7 @@ public class GameManager : MonoBehaviour
         InputManager.DisableMovement();
         menuCamera.gameObject.SetActive(true);
         mainCamera.gameObject.SetActive(false);
-        uiManager.mainMenu.SetActive(true);
-        uiManager.inventoryUI.SetActive(false);
-        uiManager.healthBarUI.SetActive(false);
-        uiManager.feedback.SetActive(false);
-        uiManager.blackScreen.alpha = 0;
+        uiManager.SetMenus();
         enemiesInGame = GameObject.FindGameObjectsWithTag("Enemy");
     }
 

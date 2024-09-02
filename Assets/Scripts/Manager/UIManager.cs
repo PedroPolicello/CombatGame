@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,9 +8,10 @@ public class UIManager : MonoBehaviour
     public GameObject inventoryUI;
     public GameObject healthBarUI;
     public GameObject feedback;
-    public GameObject mainMenu;
-    public GameObject winScreen;
     public GameObject loseScreen;
+    public GameObject winScreen;
+    public GameObject mainMenu;
+    public GameObject missionScreen;
     public GameObject optionsScreen;
     public CanvasGroup blackScreen;
     
@@ -18,7 +20,20 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider enemyHealth;
 
     private bool isPaused;
-    
+
+    public void SetMenus()
+    {
+        mainMenu.SetActive(true);
+        inventoryUI.SetActive(false);
+        healthBarUI.SetActive(false);
+        feedback.SetActive(false);
+        loseScreen.SetActive(false);
+        winScreen.SetActive(false);
+        missionScreen.SetActive(false);
+        optionsScreen.SetActive(false);
+        blackScreen.alpha = 0;
+    }
+
     public void SetHealthBars(int playerMaxHealth, int enemyMaxHealth)
     {
         playerHealth.maxValue = playerMaxHealth;
