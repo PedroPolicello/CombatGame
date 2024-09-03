@@ -33,6 +33,7 @@ public class InputManager
             GameManager.Instance.CameraController(true);
             GameManager.Instance.audioManager.BattleMusic(true);
         }
+        else return;
     }
 
     public void EnableMovement() => inputControls.Player.Move.Enable();

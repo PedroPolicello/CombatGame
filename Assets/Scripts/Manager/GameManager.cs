@@ -21,17 +21,19 @@ public class GameManager : MonoBehaviour
     
     [Header("---- Enemy Info ----")]
     public Enemy selectedEnemy;
-    public Camera enemyCamera;
-    public GameObject enemyCanvasObj;
-    public GameObject[] enemiesInGame;
-    
+    private Camera enemyCamera;
+    private GameObject enemyCanvasObj;
+    private GameObject[] enemiesInGame;
+    private Transform particleSpawn;
     private Animator enemyAnimator;
-    private bool startTurn = true;
+    
+    [Header("---- Other Infos ----")]
     [HideInInspector] public int enemiesDefeated;
     [HideInInspector] public bool inCombat;
     [HideInInspector] public bool isEquipmentSelected;
     [HideInInspector] public bool endCombat;
     [HideInInspector] public bool canFlee = true;
+    private bool startTurn = true;
     
     private void Awake()
     {
@@ -50,12 +52,13 @@ public class GameManager : MonoBehaviour
         enemiesInGame = GameObject.FindGameObjectsWithTag("Enemy");
     }
 
-    public void SetEnemyInfo(Enemy enemy, Camera camera, Animator animator, GameObject canvasObj)
+    public void SetEnemyInfo(Enemy enemy, Camera camera, Animator animator, GameObject canvasObj, Transform particleSpawnPos)
     {
         selectedEnemy = enemy;
         enemyCamera = camera;
         enemyAnimator = animator;
         enemyCanvasObj = canvasObj;
+        particleSpawn = particleSpawnPos;
     }
 
     public void SetEnemyVariables()
@@ -63,6 +66,7 @@ public class GameManager : MonoBehaviour
         enemyCanvasObj.SetActive(false);
         InputManager.DisableMovement();
         combatManager.SetEnemyHealth(selectedEnemy);
+        combatManager.SetParticleSpawnPosition(particleSpawn);
         uiManager.SetHealthBars(combatManager.playerHealth, selectedEnemy.enemyHealth);
         uiManager.inventoryUI.SetActive(true);
         uiManager.healthBarUI.SetActive(true);
@@ -147,6 +151,7 @@ public class GameManager : MonoBehaviour
         playerController.animator.SetTrigger("punch");
         yield return new WaitForSeconds(.9f);
         audioManager.ChooseRandomPunchSFX();
+        combatManager.ActivatePlayerParticle(playerController.particleSpawnPosition);
         combatManager.ApplyDamageToEnemy(inventoryManager.playerSelectedEquipment, enemyEquipment);
         uiManager.UpdateEnemyUI(combatManager.enemyHealth);
         if (combatManager.enemyHealth <= 0) combatManager.enemyHealth = 0;
@@ -157,6 +162,7 @@ public class GameManager : MonoBehaviour
         enemyAnimator.SetTrigger("punch");
         yield return new WaitForSeconds(.9f);
         audioManager.ChooseRandomPunchSFX();
+        combatManager.ActivateEnemyParticle();
         combatManager.ApplyDamageToPlayer(inventoryManager.playerSelectedEquipment, enemyEquipment);
         uiManager.UpdatePlayerUI(combatManager.playerHealth);
         if (combatManager.playerHealth <= 0) combatManager.playerHealth = 0;

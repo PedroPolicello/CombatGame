@@ -3,11 +3,10 @@ using UnityEngine;
 
 public class InteractManager : MonoBehaviour
 {
-    public static InteractManager Instance;
-    
     [Header("---- Enemy Info ----")]
     public Enemy enemySelected;
     public GameObject textGameObj;
+    public Transform particleSpawnPos;
 
     [Header("---- Components Info ----")]
     public Camera camera;
@@ -15,7 +14,6 @@ public class InteractManager : MonoBehaviour
     
     private void Awake()
     {
-        Instance = this;
         textGameObj.SetActive(false);
     }
 
@@ -23,7 +21,7 @@ public class InteractManager : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GameManager.Instance.SetEnemyInfo(enemySelected, camera, animator, textGameObj);
+            GameManager.Instance.SetEnemyInfo(enemySelected, camera, animator, textGameObj, particleSpawnPos);
             if (!GameManager.Instance.selectedEnemy.hasBeenDefeated)
             {
                 textGameObj.SetActive(true);

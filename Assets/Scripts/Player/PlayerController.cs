@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed = 5;
     [SerializeField] private GameObject playerBody;
     public Animator animator;
+    public Transform particleSpawnPosition;
     private CharacterController characterController;
     private bool inShop;
 

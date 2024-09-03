@@ -9,6 +9,10 @@ public class CombatManager : MonoBehaviour
     public int enemyHealth;
     private int playerMaxHealth;
 
+    [Header("---- Particle Info ----")] 
+    [SerializeField] private ParticleSystem[] particlesPrefab;
+    private Transform enemySpawnPosition;
+
     private void Awake()
     {
         playerMaxHealth = playerHealth;
@@ -59,6 +63,23 @@ public class CombatManager : MonoBehaviour
                 GameManager.Instance.CheckEndGame();
             }
         }
+    }
+
+    public void SetParticleSpawnPosition(Transform position)
+    {
+        enemySpawnPosition = position;
+    }
+
+    public void ActivateEnemyParticle()
+    {
+        int index = Random.Range(0, particlesPrefab.Length);
+        Instantiate(particlesPrefab[index], enemySpawnPosition);
+    }
+
+    public void ActivatePlayerParticle(Transform playerSpawnPosition)
+    {
+        int index = Random.Range(0, particlesPrefab.Length);
+        Instantiate(particlesPrefab[index], playerSpawnPosition);
     }
 
     IEnumerator LoseScreen()
